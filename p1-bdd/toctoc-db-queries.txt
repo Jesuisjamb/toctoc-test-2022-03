@@ -1,0 +1,73 @@
+1_ ¿Cuales observaciónes aparecen reportadas para el Banco BCI?
+
+    SELECT bco.nombre AS 'BANCO',
+    suc.direccion AS 'SUCURSAL', 
+    sucobs.detalle AS 'OBSERVACION', 
+    sucobs.registro_fecha AS 'FECHA_REGISTRO'
+    FROM toctocbankingdb.banco bco
+    LEFT JOIN toctocbankingdb.sucursal suc
+    ON bco.id = suc.banco_id
+    INNER JOIN toctocbankingdb.sucursal_observacion sucobs
+    ON suc.id = sucobs.sucursal_id
+    WHERE bco.nombre = 'BCI';
+
+
+2_ ¿Cuales trabajadores marcaron ingreso a una sucursal, fuera de la hora definida, durante la noche del 30-03-2020?.
+    SELECT 
+    bco.nombre AS 'BANCO', 
+    suc.direccion AS 'SUCURSAL', 
+    sucacc.registro_fecha AS 'ACCESO',
+    emp.rut AS 'RUT',
+    concat(emp.nombre,' ', emp.apellido) AS 'EMPLEADO',
+    acc.detalle AS 'ACCESO TIPO'
+    FROM toctocbankingdb.banco bco
+    LEFT JOIN toctocbankingdb.sucursal suc
+    ON bco.id = suc.banco_id
+    LEFT JOIN toctocbankingdb.sucursal_acceso sucacc
+    ON suc.id = sucacc.sucursal_id
+    INNER JOIN toctocbankingdb.empleado emp
+    ON sucacc.empleado_id = emp.id
+    INNER JOIN toctocbankingdb.acceso acc
+    ON sucacc.acceso_id = acc.id
+    WHERE sucacc.registro_fecha BETWEEN '2020-03-30 20:00' AND '2020-03-31 05:00'
+    ORDER BY bco.nombre, emp.nombre, emp.apellido ASC;
+
+
+3_ ¿Cuantos vigilantes tiene en nomina cada banco?
+
+    SELECT
+    bco.nombre AS 'BANCO',
+    count(distinct(emp.rut)) AS 'CANT VIGILANTES'
+    FROM toctocbankingdb.banco bco
+    LEFT JOIN toctocbankingdb.sucursal suc
+    ON bco.id = suc.banco_id
+    LEFT JOIN toctocbankingdb.sucursal_empleado sucemp
+    ON suc.id = sucemp.sucursal_id
+    LEFT JOIN toctocbankingdb.empleado emp
+    ON sucemp.empleado_id = emp.id
+    WHERE emp.tiene_detalle = 1
+    GROUP BY bco.nombre ASC;
+
+
+4_ ¿Cuales empleados estan pendientes por configurar sus credenciales de acceso?
+    SELECT
+    emp.rut AS 'RUT',
+    concat(emp.nombre,' ', emp.apellido) AS 'NOMBRE',
+    ususis.username  'USERNAME',
+    if(ususis.vigente='0', 'Pendiente', 'Valido') AS 'ESTADO CUENTA'
+    FROM toctocbankingdb.empleado emp
+    INNER JOIN toctocbankingdb.usuario_sistema ususis
+    ON emp.id = ususis.empleado_id
+    WHERE ususis.vigente = 0;
+
+
+5_ ¿Cuantas sucursales por region? - ordenar de forma decreciente.
+    SELECT 
+    reg.nombre AS 'REGION',
+    COUNT(suc.direccion) 'CANT SUCURSALES'
+    FROM toctocbankingdb.region reg
+    INNER JOIN toctocbankingdb.sucursal suc
+    ON reg.id = suc.region_id
+    GROUP BY reg.nombre
+    ORDER BY 'CANT SUCURSALES'
+    ORDER BY COUNT(suc.direccion) ASC;
