@@ -1,0 +1,16 @@
+{
+  "name": "p2-javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "clear && jest",
+    "dev": "clear && node index.js"
+  },
+  "keywords": [],
+  "author": "Jesuisjamb",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
