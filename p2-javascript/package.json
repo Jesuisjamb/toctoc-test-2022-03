@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "clear && jest",
-    "dev": "clear && node index.js"
+    "dev": "clear && node index.js",
+    "test": "clear && jest"
   },
   "keywords": [],
   "author": "Jesuisjamb",

@@ -1,4 +1,4 @@
-const { ordenarArr } = require('./ordenar-arr');
+const { ordenarArr } = require('../ordenar/ordenar-arr');
 
 const busqRecursiva = (num, arr, ini, fin) => {    
     if(fin >= ini){
