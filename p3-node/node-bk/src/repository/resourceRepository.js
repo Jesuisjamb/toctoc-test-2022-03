@@ -6,7 +6,8 @@ const addZero = (params) => {
 }
 
 const parseEpochDate = (epoch) => {
-    const localDate = new Date(((parseInt(epoch)) + (3600*3)) * 1000);
+    const ajuste = 3600 * 0; // 3600seg x Hora de desfase
+    const localDate = new Date(((parseInt(epoch)) + ajuste) * 1000);
     const year  = localDate.getFullYear();
     const month = addZero(localDate.getMonth() + 1);
     const day   = addZero(localDate.getDate());
@@ -34,6 +35,7 @@ const closeConn = (db) => {
 }
 
 const selectData = (db, timestamp) => {
+    console.warn(`[WARN] - timestamp podria variar según su configuración local - ${timestamp}`);
     const sqlQuery = `
         SELECT * FROM recurso 
         WHERE timestamp BETWEEN ? AND datetime('now', 'localtime');
@@ -53,5 +55,6 @@ exports.getBddData = async ({epoch}) => {
     const db        = openConn();
     const dataset   = await selectData(db, timestamp);
     closeConn(db);
+
     return { dataset };
 }

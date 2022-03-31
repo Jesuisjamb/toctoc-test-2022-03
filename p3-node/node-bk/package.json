@@ -4,9 +4,8 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "dev": "clear && nodemon handler.js",
-    "test": "jest",
-    "build": "clear && node handler.js"
+    "test": "clear && nodemon handler.js",
+    "dev": "clear && node handler.js"
   },
   "keywords": [],
   "author": "Jesuisjamb",
