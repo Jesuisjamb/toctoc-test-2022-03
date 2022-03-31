@@ -8,16 +8,11 @@ exports.getSysData = () => {
     const freemem  = os.freemem();
     const totalmem = os.totalmem()
     const memoria  = totalmem - freemem;
-    // const date     = new Date();
-    // const fecha    = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-    // const hora     = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;;
 
     return [
         id, 
         hostname, 
         platform, 
         memoria, 
-        // fecha, 
-        // hora
     ];
 }
